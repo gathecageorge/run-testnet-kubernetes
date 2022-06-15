@@ -1,0 +1,112 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: mysql-secret
+type: Opaque
+data:
+    mysql-root-username: cm9vdA==
+    mysql-root-password: cm9vdA==
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-configmap
+data:
+  database_url: mysql-service
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql
+        args:
+        - "--default-authentication-plugin=mysql_native_password"
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-root-username
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+spec:
+  selector:
+    app: mysql
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: names-application
+  labels:
+    app: names-application
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: names-application
+  template:
+    metadata:
+      labels:
+        app: names-application
+    spec:
+      containers:
+      - name: names-application
+        image: gathecageorge/kubernetes-app:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DATABASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-root-username
+        - name: DATABASE_PASSWORD
+          valueFrom: 
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-root-password
+        - name: DATABASE_HOST
+          valueFrom: 
+            configMapKeyRef:
+              name: mysql-configmap
+              key: database_url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: names-application-service
+spec:
+  selector:
+    app: names-application
+  type: LoadBalancer  
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 30000
