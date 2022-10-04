@@ -3,16 +3,19 @@ kind: Deployment
 metadata:
   name: lighthouse-deployment
   labels:
-    client: lighthouse
+    app: testnet
+    name: lighthouse
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      client: lighthouse
+      app: testnet
+      name: lighthouse
   template:
     metadata:
       labels:
-        client: lighthouse
+        app: testnet
+        name: lighthouse
     spec:
       containers:
       - name: lighthouse-beacon
@@ -21,17 +24,17 @@ spec:
         - name: BOOTNODE_ENR
           valueFrom: 
             configMapKeyRef:
-              name: configmap
+              name: clients-configmap
               key: bootnode_enr
         - name: TERMINAL_DIFFICULTY
           valueFrom: 
             configMapKeyRef:
-              name: configmap
+              name: clients-configmap
               key: terminal_difficulty
         - name: ETH1_ENDPOINT
           valueFrom: 
             configMapKeyRef:
-              name: configmap
+              name: clients-configmap
               key: eth1_endpoint
         - name: POD_IP
           valueFrom:
@@ -64,6 +67,9 @@ spec:
         - "--terminal-total-difficulty-override=$(TERMINAL_DIFFICULTY)"
         ports:
         - containerPort: 9000
+          name: http
+        - containerPort: 8000
+          name: metrics
         volumeMounts:
         - mountPath: "/data"
           name: pvc-storage

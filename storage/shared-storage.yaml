@@ -10,6 +10,7 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
+    # todo change IP to nfs service nodeport IP
     server: 10.128.3.245
     path: "/"
 

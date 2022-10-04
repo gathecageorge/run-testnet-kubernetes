@@ -3,16 +3,19 @@ kind: Deployment
 metadata:
   name: teku-deployment
   labels:
-    client: teku
+    app: testnet
+    name: teku
 spec:
   replicas: 1
   selector:
     matchLabels:
-      client: teku
+      app: testnet
+      name: teku
   template:
     metadata:
       labels:
-        client: teku
+        app: testnet
+        name: teku
     spec:
       containers:
       - name: teku-beacon
@@ -51,6 +54,9 @@ spec:
         - "--eth1-endpoint=http://173.230.158.103:8545"
         ports:
         - containerPort: 9000
+          name: http
+        - containerPort: 8000
+          name: metrics
         volumeMounts:
         - mountPath: "/data"
           name: pvc-storage

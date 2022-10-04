@@ -3,16 +3,19 @@ kind: Deployment
 metadata:
   name: nimbus-deployment
   labels:
-    client: nimbus
+    app: testnet
+    name: nimbus
 spec:
   replicas: 1
   selector:
     matchLabels:
-      client: nimbus
+      app: testnet
+      name: nimbus
   template:
     metadata:
       labels:
-        client: nimbus
+        app: testnet
+        name: nimbus
     spec:
       containers:
       - name: nimbus-beacon
@@ -51,6 +54,9 @@ spec:
         - "--terminal-total-difficulty-override=96652946912555663360000"
         ports:
         - containerPort: 9000
+          name: http
+        - containerPort: 8000
+          name: metrics
         volumeMounts:
         - mountPath: "/data"
           name: pvc-storage

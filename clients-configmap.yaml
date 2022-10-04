@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: configmap
+  name: clients-configmap
 data:
   bootnode_enr: "enr:-Iq4QLfwemf_3ny8I5Ki3FxWU6v210hVnO1IiXlWivLeCGBVSdQl4uFnCIhspAOHsqa6ZOqlKsiOIxntdh0VSyJ8IPiGAYOi5ih3gmlkgnY0gmlwhAoCADyJc2VjcDI1NmsxoQPJ0lHBeXr6cdq-_RN9q4QKqxFnHPdUXMeOeY1MaNsEU4N1ZHCCIyk"
   eth1_endpoint: "http://173.230.158.103:8545"
