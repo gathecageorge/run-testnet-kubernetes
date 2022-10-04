@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu
+  labels:
+    client: ubuntu
+spec:
+  containers:
+  - name: ubuntu
+    image: ubuntu:latest
+    command: ["/bin/bash"]
+    args: ["-c", "apt update && apt install -y net-tools iputils-ping telnet curl && while true; do echo hello; sleep 10;done"]
+    volumeMounts:
+    - mountPath: "/data"
+      name: pvc-storage
+  volumes:
+    - name: pvc-storage
+      persistentVolumeClaim:
+        claimName: nfs

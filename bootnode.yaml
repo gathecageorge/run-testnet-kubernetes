@@ -1,42 +1,28 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Pod
 metadata:
-  name: bootnode-deployment
+  name: bootnode
   labels:
-    client: bootnode
+    app: bootnode
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      client: bootnode
-  template:
-    metadata:
-      labels:
-        client: bootnode
-    spec:
-      containers:
-      - name: bootnode
-        image: protolambda/eth2-bootnode:cleanup
-        env:
-        - name: BOOTNODE_PRIV_KEY
-          valueFrom: 
-            configMapKeyRef:
-              name: configmap
-              key: bootnode_priv_key
-        - name: POD_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
-        args:
-        - "--color=false"
-        - "--enr-ip=$(POD_IP)"
-        - "--enr-udp=9001"
-        - "--level=error"
-        - "--listen-ip=0.0.0.0"
-        - "--listen-udp=9001"
-        - "--api-addr=0.0.0.0:8002"
-        - "--node-db=/data/localnode.db"
-        - "--priv=$(BOOTNODE_PRIV_KEY)"
-        ports:
-        - containerPort: 9001
-        - containerPort: 8002
+  containers:
+  - name: bootnode
+    image: protolambda/eth2-bootnode:cleanup
+    env:
+    - name: POD_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP
+    args:
+    - "--color=false"
+    - "--enr-ip=$(POD_IP)"
+    - "--enr-udp=9001"
+    - "--level=error"
+    - "--listen-ip=$(POD_IP)"
+    - "--listen-udp=9001"
+    - "--api-addr=$(POD_IP):8002"
+    - "--node-db=/data/localnode.db"
+    - "--priv=54992672330e5e659a9307f55dc0b8c6f521cadb30b31850af6e6fa38fad9465"
+    ports:
+    - containerPort: 9001
+    - containerPort: 8002

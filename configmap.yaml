@@ -3,7 +3,6 @@ kind: ConfigMap
 metadata:
   name: configmap
 data:
-  bootnode_priv_key: "54992672330e5e659a9307f55dc0b8c6f521cadb30b31850af6e6fa38fad9465"
   bootnode_enr: "enr:-Iq4QLfwemf_3ny8I5Ki3FxWU6v210hVnO1IiXlWivLeCGBVSdQl4uFnCIhspAOHsqa6ZOqlKsiOIxntdh0VSyJ8IPiGAYOi5ih3gmlkgnY0gmlwhAoCADyJc2VjcDI1NmsxoQPJ0lHBeXr6cdq-_RN9q4QKqxFnHPdUXMeOeY1MaNsEU4N1ZHCCIyk"
   eth1_endpoint: "http://173.230.158.103:8545"
   terminal_difficulty: "96652946912555663360000"

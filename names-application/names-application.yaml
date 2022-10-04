@@ -16,35 +16,27 @@ data:
   database_url: mysql-service
 
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Pod
 metadata:
   name: mysql-deployment
   labels:
     app: mysql
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: mysql
-  template:
-    metadata:
-      labels:
-        app: mysql
-    spec:
-      containers:
-      - name: mysql
-        image: mysql
-        args:
-        - "--default-authentication-plugin=mysql_native_password"
-        ports:
-        - containerPort: 3306
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: mysql-root-username
+  containers:
+  - name: mysql
+    image: mysql
+    args:
+    - "--default-authentication-plugin=mysql_native_password"
+    ports:
+    - containerPort: 3306
+    env:
+    - name: MYSQL_ROOT_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: mysql-secret
+          key: mysql-root-username
+
 ---
 apiVersion: v1
 kind: Service
@@ -77,7 +69,7 @@ spec:
     spec:
       containers:
       - name: names-application
-        image: gathecageorge/kubernetes-app:latest
+        image: gathecageorge/node-names-application:latest
         ports:
         - containerPort: 3000
         env:
@@ -96,6 +88,9 @@ spec:
             configMapKeyRef:
               name: mysql-configmap
               key: database_url
+        - name: PORT
+          value: "3000" 
+
 ---
 apiVersion: v1
 kind: Service
