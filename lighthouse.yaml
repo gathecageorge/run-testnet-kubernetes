@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lighthouse-deployment
+  labels:
+    client: lighthouse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      client: lighthouse
+  template:
+    metadata:
+      labels:
+        client: lighthouse
+    spec:
+      containers:
+      - name: lighthouse-beacon
+        image: sigp/lighthouse:latest
+        env:
+        - name: BOOTNODE_ENR
+          valueFrom: 
+            configMapKeyRef:
+              name: configmap
+              key: bootnode_enr
+        - name: TERMINAL_DIFFICULTY
+          valueFrom: 
+            configMapKeyRef:
+              name: configmap
+              key: terminal_difficulty
+        - name: ETH1_ENDPOINT
+          valueFrom: 
+            configMapKeyRef:
+              name: configmap
+              key: eth1_endpoint
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        args:
+        - "lighthouse"
+        - "--debug-level=debug"
+        - "--datadir=/beacondata"
+        - "--testnet-dir=/data/custom_config_data"
+        - "bn"
+        - "--disable-enr-auto-update"
+        - "--enr-address=$(POD_IP)"
+        - "--enr-tcp-port=9000"
+        - "--enr-udp-port=9000"
+        - "--port=9000"
+        - "--discovery-port=9000"
+        - "--http"
+        - "--http-address=0.0.0.0"
+        - "--http-port=4000"
+        - "--metrics"
+        - "--metrics-address=0.0.0.0"
+        - "--metrics-port=8000"
+        - "--listen-address=0.0.0.0"
+        - "--graffiti=geth-lighthouse"
+        - "--target-peers=25"
+        - "--eth1"
+        - "--boot-nodes=$(BOOTNODE_ENR)"
+        - "--eth1-endpoints=$(ETH1_ENDPOINT)"
+        - "--terminal-total-difficulty-override=$(TERMINAL_DIFFICULTY)"
+        ports:
+        - containerPort: 9000
+        volumeMounts:
+        - mountPath: "/data"
+          name: pvc-storage
+      volumes:
+        - name: pvc-storage
+          persistentVolumeClaim:
+            claimName: nfs

@@ -1,0 +1,15 @@
+---
+# Create volume to store information
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-testnet
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  #storageClassName: linode-block-storage-retain #Retained even after delete pvc
+  storageClassName: linode-block-storage #Not retained
+

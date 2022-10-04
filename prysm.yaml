@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prysm-deployment
+  labels:
+    client: prysm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      client: prysm
+  template:
+    metadata:
+      labels:
+        client: prysm
+    spec:
+      containers:
+      - name: prysm-beacon
+        image: prysmaticlabs/prysm-beacon-chain:latest
+        env:
+        - name: BOOTNODE_ENR
+          valueFrom: 
+            configMapKeyRef:
+              name: configmap
+              key: bootnode_enr
+        - name: TERMINAL_DIFFICULTY
+          valueFrom: 
+            configMapKeyRef:
+              name: configmap
+              key: terminal_difficulty
+        - name: ETH1_ENDPOINT
+          valueFrom: 
+            configMapKeyRef:
+              name: configmap
+              key: eth1_endpoint
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        args:
+        - "--accept-terms-of-use=true"
+        - "--datadir=/beacondata"
+        - "--genesis-state=/data/custom_config_data/genesis.ssz"
+        - "--chain-config-file=/data/custom_config_data/config.yaml"
+        - "--verbosity=debug"
+        - "--min-sync-peers=1"
+        - "--pprof"
+        - "--p2p-host-ip=$(POD_IP)"
+        - "--p2p-max-peers=25"
+        - "--p2p-udp-port=9000"
+        - "--p2p-tcp-port=9000"
+        - "--monitoring-host=0.0.0.0"
+        - "--monitoring-port=8000"
+        - "--rpc-host=0.0.0.0"
+        - "--rpc-port=4001"
+        - "--grpc-gateway-host=0.0.0.0"
+        - "--grpc-gateway-port=4000"
+        - "--enable-debug-rpc-endpoints"
+        - "--bootstrap-node=$(BOOTNODE_ENR)"
+        - "--execution-endpoint=$(ETH1_ENDPOINT)"
+        - "--terminal-total-difficulty-override=$(TERMINAL_DIFFICULTY)"
+        ports:
+        - containerPort: 9000
+        volumeMounts:
+        - mountPath: "/data"
+          name: pvc-storage
+      volumes:
+        - name: pvc-storage
+          persistentVolumeClaim:
+            claimName: nfs
