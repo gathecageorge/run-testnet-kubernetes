@@ -1,12 +1,12 @@
 ---
-# Service account
+# Service account for promtail
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: promtail
 
 ---
-# Role
+# Role for promtail
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -26,7 +26,7 @@ rules:
   - watch
 
 ---
-# Role binding
+# Role binding for promtail
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -360,4 +360,4 @@ spec:
     protocol: TCP
     port: 3100
     targetPort: 3100
-  type: NodePort
+  type: ClusterIP

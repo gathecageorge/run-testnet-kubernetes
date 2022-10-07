@@ -1,5 +1,5 @@
 ---
-# Cluster role
+# Cluster role for prometheus
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -22,14 +22,14 @@ rules:
   verbs: ["get"]
 
 ---
-# Service account
+# Service account for prometheus
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: prometheus
 
 ---
-# Cluster role binding
+# Cluster role binding for prometheus
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -135,4 +135,4 @@ spec:
     protocol: TCP
     port: 9090
     targetPort: 9090
-  type: NodePort
+  type: ClusterIP

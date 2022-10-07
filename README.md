@@ -1,6 +1,6 @@
 # ReadMe
 
-## testnet setup
+## setup for all
 
 ```bash
 # Create linode PVC if not exists only
@@ -18,40 +18,7 @@ kubectl apply -f ubuntu.yaml
 
 # Reset
 kubectl delete -f ubuntu.yaml && kubectl delete -f storage/shared-storage.yaml && kubectl delete -f storage/nfs.yaml
-```
 
-## names application
-
-```bash
-# Create
-kubectl apply -f names-application/names-application.yaml
-
-# Reset
-kubectl delete -f names-application/names-application.yaml
-```
-
-## monitoring
-
-```bash
-# Setup
-kubectl apply -f monitoring/main.yaml
-
-# Reset
-kubectl delete -f monitoring/main.yaml
-```
-
-## testnet launch
-
-```bash
-# Bootnode
-kubectl apply -f bootnode.yaml
-
-# Config map
-kubectl apply -f clients-configmap.yaml
-
-# Clients
-kubectl apply -f clients/lighthouse.yaml
-kubectl apply -f clients/nimbus.yaml
-kubectl apply -f clients/prysm.yaml
-kubectl apply -f clients/teku.yaml
+# Delete PVC if needed
+kubectl delete -f storage/pvc.yaml
 ```
