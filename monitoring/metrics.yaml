@@ -115,6 +115,13 @@ spec:
           subPath: prometheus.yml
         ports:
         - containerPort: 9090
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "512Mi"
+            cpu: "1000m"
       volumes:
       - name: config-volume
         configMap:

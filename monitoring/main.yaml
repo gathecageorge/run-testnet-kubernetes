@@ -60,16 +60,18 @@ spec:
           - mountPath: /etc/grafana/provisioning/datasources
             name: grafana-datasources
             readOnly: false
-          - name: pvc-storage
-            mountPath: /data
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "512Mi"
+            cpu: "1000m"
       volumes:
         - name: grafana-datasources
           configMap:
               defaultMode: 420
               name: grafana-datasources
-        - name: pvc-storage
-          persistentVolumeClaim:
-            claimName: nfs
 
 ---
 # Grafana service port 3000

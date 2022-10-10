@@ -19,10 +19,10 @@ spec:
         image: ubuntu:latest
         command: ["/bin/bash"]
         args: ["-c", "apt update && apt install -y net-tools iputils-ping telnet curl && while true; do echo hello; sleep 10;done"]
-        volumeMounts:
-        - mountPath: "/data"
-          name: pvc-storage
-      volumes:
-        - name: pvc-storage
-          persistentVolumeClaim:
-            claimName: nfs
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"

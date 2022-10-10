@@ -208,6 +208,13 @@ spec:
           runAsUser: 0
         ports:
         - containerPort: 9080
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "512Mi"
+            cpu: "1000m"
       volumes:
       - name: config-volume
         configMap:
@@ -341,6 +348,13 @@ spec:
           subPath: loki.yml
         ports:
         - containerPort: 3100
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "512Mi"
+            cpu: "1000m"
       volumes:
       - name: config-volume
         configMap:

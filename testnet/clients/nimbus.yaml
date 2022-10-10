@@ -57,10 +57,10 @@ spec:
           name: http
         - containerPort: 8000
           name: metrics
-        volumeMounts:
-        - mountPath: "/data"
-          name: pvc-storage
-      volumes:
-        - name: pvc-storage
-          persistentVolumeClaim:
-            claimName: nfs
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "512Mi"
+            cpu: "1000m"
