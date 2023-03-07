@@ -26,19 +26,15 @@ spec:
             fieldRef:
               fieldPath: status.podIP
         args:
-        - "--network=/data/custom_config_data/config.yaml"
-        - "--initial-state=/data/custom_config_data/genesis.ssz"
         - "--data-path=/beacondata"
         - "--data-storage-mode=PRUNE"
         - "--p2p-enabled=true"
-        - "--p2p-advertised-ip=$(POD_IP)"
         - "--p2p-port=9000"
         - "--p2p-advertised-port=9000"
         - "--logging=debug"
         - "--log-destination=CONSOLE"
         - "--log-file=/beacondata/log_outputs"
         - "--p2p-peer-upper-bound=25"
-        - "--p2p-discovery-bootnodes=enr:-Iq4QJ_uz4Bg0mOrI6TR9kCOHPOsblm7ZXmSfbMkyD_neDVaYoR7JeoO2oTIQ6mMENEd1f3hvZEIitsu00yV0YJ8GkOGAYOg6tsJgmlkgnY0gmlwhAoCADGJc2VjcDI1NmsxoQPJ0lHBeXr6cdq-_RN9q4QKqxFnHPdUXMeOeY1MaNsEU4N1ZHCCIyk"
         - "--metrics-enabled=true"
         - "--metrics-interface=0.0.0.0"
         - "--metrics-port=8000"
@@ -50,6 +46,10 @@ spec:
         - "--rest-api-port=4000"
         - "--metrics-host-allowlist=*"
         - "--rest-api-host-allowlist=*"
+        - "--p2p-advertised-ip=$(POD_IP)"
+        - "--p2p-discovery-bootnodes=enr:-Iq4QJ_uz4Bg0mOrI6TR9kCOHPOsblm7ZXmSfbMkyD_neDVaYoR7JeoO2oTIQ6mMENEd1f3hvZEIitsu00yV0YJ8GkOGAYOg6tsJgmlkgnY0gmlwhAoCADGJc2VjcDI1NmsxoQPJ0lHBeXr6cdq-_RN9q4QKqxFnHPdUXMeOeY1MaNsEU4N1ZHCCIyk"
+        - "--network=/data/custom_config_data/config.yaml"
+        - "--initial-state=/data/custom_config_data/genesis.ssz"
         - "--ee-endpoint=http://173.230.158.103:8545"
         - "--eth1-endpoint=http://173.230.158.103:8545"
         ports:

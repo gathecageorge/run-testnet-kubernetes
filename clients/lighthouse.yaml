@@ -6,7 +6,7 @@ metadata:
     app: testnet
     name: lighthouse
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: testnet
@@ -21,21 +21,6 @@ spec:
       - name: lighthouse-beacon
         image: sigp/lighthouse:latest
         env:
-        - name: BOOTNODE_ENR
-          valueFrom: 
-            configMapKeyRef:
-              name: clients-configmap
-              key: bootnode_enr
-        - name: TERMINAL_DIFFICULTY
-          valueFrom: 
-            configMapKeyRef:
-              name: clients-configmap
-              key: terminal_difficulty
-        - name: ETH1_ENDPOINT
-          valueFrom: 
-            configMapKeyRef:
-              name: clients-configmap
-              key: eth1_endpoint
         - name: POD_IP
           valueFrom:
             fieldRef:
@@ -44,10 +29,9 @@ spec:
         - "lighthouse"
         - "--debug-level=debug"
         - "--datadir=/beacondata"
-        - "--testnet-dir=/data/custom_config_data"
+        - "--testnet-dir=/custom_config_data"
         - "bn"
         - "--disable-enr-auto-update"
-        - "--enr-address=$(POD_IP)"
         - "--enr-tcp-port=9000"
         - "--enr-udp-port=9000"
         - "--port=9000"
@@ -62,9 +46,9 @@ spec:
         - "--graffiti=geth-lighthouse"
         - "--target-peers=25"
         - "--eth1"
-        - "--boot-nodes=$(BOOTNODE_ENR)"
-        - "--eth1-endpoints=$(ETH1_ENDPOINT)"
-        - "--terminal-total-difficulty-override=$(TERMINAL_DIFFICULTY)"
+        - "--enr-address=$(POD_IP)"
+        - "--boot-nodes=enr:-Iq4QJ_uz4Bg0mOrI6TR9kCOHPOsblm7ZXmSfbMkyD_neDVaYoR7JeoO2oTIQ6mMENEd1f3hvZEIitsu00yV0YJ8GkOGAYOg6tsJgmlkgnY0gmlwhAoCADGJc2VjcDI1NmsxoQPJ0lHBeXr6cdq-_RN9q4QKqxFnHPdUXMeOeY1MaNsEU4N1ZHCCIyk"
+        - "--eth1-endpoints=http://173.230.158.103:8545"
         ports:
         - containerPort: 9000
           name: http

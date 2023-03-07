@@ -6,7 +6,7 @@ metadata:
     app: testnet
     name: prysm
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: testnet
@@ -21,21 +21,6 @@ spec:
       - name: prysm-beacon
         image: prysmaticlabs/prysm-beacon-chain:latest
         env:
-        - name: BOOTNODE_ENR
-          valueFrom: 
-            configMapKeyRef:
-              name: clients-configmap
-              key: bootnode_enr
-        - name: TERMINAL_DIFFICULTY
-          valueFrom: 
-            configMapKeyRef:
-              name: clients-configmap
-              key: terminal_difficulty
-        - name: ETH1_ENDPOINT
-          valueFrom: 
-            configMapKeyRef:
-              name: clients-configmap
-              key: eth1_endpoint
         - name: POD_IP
           valueFrom:
             fieldRef:
@@ -43,12 +28,9 @@ spec:
         args:
         - "--accept-terms-of-use=true"
         - "--datadir=/beacondata"
-        - "--genesis-state=/data/custom_config_data/genesis.ssz"
-        - "--chain-config-file=/data/custom_config_data/config.yaml"
         - "--verbosity=debug"
         - "--min-sync-peers=1"
         - "--pprof"
-        - "--p2p-host-ip=$(POD_IP)"
         - "--p2p-max-peers=25"
         - "--p2p-udp-port=9000"
         - "--p2p-tcp-port=9000"
@@ -59,9 +41,11 @@ spec:
         - "--grpc-gateway-host=0.0.0.0"
         - "--grpc-gateway-port=4000"
         - "--enable-debug-rpc-endpoints"
-        - "--bootstrap-node=$(BOOTNODE_ENR)"
-        - "--execution-endpoint=$(ETH1_ENDPOINT)"
-        - "--terminal-total-difficulty-override=$(TERMINAL_DIFFICULTY)"
+        - "--p2p-host-ip=$(POD_IP)"
+        - "--bootstrap-node=enr:-Iq4QJ_uz4Bg0mOrI6TR9kCOHPOsblm7ZXmSfbMkyD_neDVaYoR7JeoO2oTIQ6mMENEd1f3hvZEIitsu00yV0YJ8GkOGAYOg6tsJgmlkgnY0gmlwhAoCADGJc2VjcDI1NmsxoQPJ0lHBeXr6cdq-_RN9q4QKqxFnHPdUXMeOeY1MaNsEU4N1ZHCCIyk"
+        - "--execution-endpoint=http://173.230.158.103:8545"
+        - "--genesis-state=/data/custom_config_data/genesis.ssz"
+        - "--chain-config-file=/data/custom_config_data/config.yaml"
         ports:
         - containerPort: 9000
           name: http

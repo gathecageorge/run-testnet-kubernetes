@@ -32,8 +32,6 @@ spec:
         - "--tcp-port=9000"
         - "--udp-port=9000"
         - "--max-peers=25"
-        - "--network=/data/custom_config_data"
-        - "--bootstrap-node=enr:-Iq4QJ_uz4Bg0mOrI6TR9kCOHPOsblm7ZXmSfbMkyD_neDVaYoR7JeoO2oTIQ6mMENEd1f3hvZEIitsu00yV0YJ8GkOGAYOg6tsJgmlkgnY0gmlwhAoCADGJc2VjcDI1NmsxoQPJ0lHBeXr6cdq-_RN9q4QKqxFnHPdUXMeOeY1MaNsEU4N1ZHCCIyk"
         - "--graffiti=geth-nimbus"
         - "--log-level=debug"
         - "--rest"
@@ -45,13 +43,14 @@ spec:
         - "--metrics-port=8000"
         - "--metrics-address=0.0.0.0"
         - "--listen-address=0.0.0.0"
-        - "--nat=extip:$(POD_IP)"
-        - "--validators-dir=/validatordata/keys"
-        - "--secrets-dir=/validatordata/secrets"
         - "--validator-monitor-auto"
         - "--dump:on"
+        - "--validators-dir=/validatordata/keys"
+        - "--secrets-dir=/validatordata/secrets"
+        - "--nat=extip:$(POD_IP)"
+        - "--network=/custom_config_data"
+        - "--bootstrap-node=enr:-Iq4QJ_uz4Bg0mOrI6TR9kCOHPOsblm7ZXmSfbMkyD_neDVaYoR7JeoO2oTIQ6mMENEd1f3hvZEIitsu00yV0YJ8GkOGAYOg6tsJgmlkgnY0gmlwhAoCADGJc2VjcDI1NmsxoQPJ0lHBeXr6cdq-_RN9q4QKqxFnHPdUXMeOeY1MaNsEU4N1ZHCCIyk"
         - "--web3-url=http://173.230.158.103:8545"
-        - "--terminal-total-difficulty-override=96652946912555663360000"
         ports:
         - containerPort: 9000
           name: http
