@@ -1,6 +1,9 @@
 # testnet launch
 
 ```bash
+# Setup Storage before everything
+kubectl apply -f local-storage.yaml
+
 # Bootnode
 kubectl apply -f clients/bootnode.yaml
 

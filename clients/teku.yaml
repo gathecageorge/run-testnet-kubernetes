@@ -17,6 +17,10 @@ spec:
         app: testnet
         name: teku
     spec:
+      volumes:
+        - name: custom-config-data-claim
+          persistentVolumeClaim:
+            claimName: custom-config-data-claim
       containers:
       - name: teku-beacon
         image: consensys/teku:latest
@@ -48,10 +52,13 @@ spec:
         - "--rest-api-host-allowlist=*"
         - "--p2p-advertised-ip=$(POD_IP)"
         - "--p2p-discovery-bootnodes=enr:-Iq4QJ_uz4Bg0mOrI6TR9kCOHPOsblm7ZXmSfbMkyD_neDVaYoR7JeoO2oTIQ6mMENEd1f3hvZEIitsu00yV0YJ8GkOGAYOg6tsJgmlkgnY0gmlwhAoCADGJc2VjcDI1NmsxoQPJ0lHBeXr6cdq-_RN9q4QKqxFnHPdUXMeOeY1MaNsEU4N1ZHCCIyk"
-        - "--network=/data/custom_config_data/config.yaml"
-        - "--initial-state=/data/custom_config_data/genesis.ssz"
+        - "--network=/custom_config_data/config.yaml"
+        - "--initial-state=/custom_config_data/genesis.ssz"
         - "--ee-endpoint=http://173.230.158.103:8545"
         - "--eth1-endpoint=http://173.230.158.103:8545"
+        volumeMounts:
+          - mountPath: "/custom_config_data"
+            name: custom-config-data-claim
         ports:
         - containerPort: 9000
           name: http

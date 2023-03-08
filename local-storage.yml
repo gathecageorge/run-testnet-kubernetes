@@ -1,0 +1,31 @@
+---
+# Custom config data volume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name:  custom-config-data-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/root/run-testnet-kubernetes/custom_config_data"
+
+---
+# Custom config data volume claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: custom-config-data-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+

@@ -17,6 +17,10 @@ spec:
         app: testnet
         name: prysm
     spec:
+      volumes:
+        - name: custom-config-data-claim
+          persistentVolumeClaim:
+            claimName: custom-config-data-claim
       containers:
       - name: prysm-beacon
         image: prysmaticlabs/prysm-beacon-chain:latest
@@ -44,8 +48,11 @@ spec:
         - "--p2p-host-ip=$(POD_IP)"
         - "--bootstrap-node=enr:-Iq4QJ_uz4Bg0mOrI6TR9kCOHPOsblm7ZXmSfbMkyD_neDVaYoR7JeoO2oTIQ6mMENEd1f3hvZEIitsu00yV0YJ8GkOGAYOg6tsJgmlkgnY0gmlwhAoCADGJc2VjcDI1NmsxoQPJ0lHBeXr6cdq-_RN9q4QKqxFnHPdUXMeOeY1MaNsEU4N1ZHCCIyk"
         - "--execution-endpoint=http://173.230.158.103:8545"
-        - "--genesis-state=/data/custom_config_data/genesis.ssz"
-        - "--chain-config-file=/data/custom_config_data/config.yaml"
+        - "--genesis-state=/custom_config_data/genesis.ssz"
+        - "--chain-config-file=/custom_config_data/config.yaml"
+        volumeMounts:
+          - mountPath: "/custom_config_data"
+            name: custom-config-data-claim
         ports:
         - containerPort: 9000
           name: http

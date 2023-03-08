@@ -14,6 +14,10 @@ spec:
       labels:
         app: ubuntu
     spec:
+      volumes:
+        - name: custom-config-data-claim
+          persistentVolumeClaim:
+            claimName: custom-config-data-claim
       containers:
       - name: ubuntu
         image: ubuntu:latest
@@ -26,3 +30,7 @@ spec:
           limits:
             memory: "128Mi"
             cpu: "500m"
+        volumeMounts:
+          - mountPath: "/mnt"
+            name: custom-config-data-claim
+

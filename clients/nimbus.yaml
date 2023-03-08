@@ -17,6 +17,10 @@ spec:
         app: testnet
         name: nimbus
     spec:
+      volumes:
+        - name: custom-config-data-claim
+          persistentVolumeClaim:
+            claimName: custom-config-data-claim
       containers:
       - name: nimbus-beacon
         image: statusim/nimbus-eth2:multiarch-latest
@@ -45,12 +49,15 @@ spec:
         - "--listen-address=0.0.0.0"
         - "--validator-monitor-auto"
         - "--dump:on"
-        - "--validators-dir=/validatordata/keys"
-        - "--secrets-dir=/validatordata/secrets"
+        # - "--validators-dir=/validatordata/keys"
+        # - "--secrets-dir=/validatordata/secrets"
         - "--nat=extip:$(POD_IP)"
         - "--network=/custom_config_data"
         - "--bootstrap-node=enr:-Iq4QJ_uz4Bg0mOrI6TR9kCOHPOsblm7ZXmSfbMkyD_neDVaYoR7JeoO2oTIQ6mMENEd1f3hvZEIitsu00yV0YJ8GkOGAYOg6tsJgmlkgnY0gmlwhAoCADGJc2VjcDI1NmsxoQPJ0lHBeXr6cdq-_RN9q4QKqxFnHPdUXMeOeY1MaNsEU4N1ZHCCIyk"
         - "--web3-url=http://173.230.158.103:8545"
+        volumeMounts:
+          - mountPath: "/custom_config_data"
+            name: custom-config-data-claim
         ports:
         - containerPort: 9000
           name: http

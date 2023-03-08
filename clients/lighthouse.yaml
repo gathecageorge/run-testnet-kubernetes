@@ -17,6 +17,10 @@ spec:
         app: testnet
         name: lighthouse
     spec:
+      volumes:
+        - name: custom-config-data-claim
+          persistentVolumeClaim:
+            claimName: custom-config-data-claim
       containers:
       - name: lighthouse-beacon
         image: sigp/lighthouse:latest
@@ -49,6 +53,9 @@ spec:
         - "--enr-address=$(POD_IP)"
         - "--boot-nodes=enr:-Iq4QJ_uz4Bg0mOrI6TR9kCOHPOsblm7ZXmSfbMkyD_neDVaYoR7JeoO2oTIQ6mMENEd1f3hvZEIitsu00yV0YJ8GkOGAYOg6tsJgmlkgnY0gmlwhAoCADGJc2VjcDI1NmsxoQPJ0lHBeXr6cdq-_RN9q4QKqxFnHPdUXMeOeY1MaNsEU4N1ZHCCIyk"
         - "--eth1-endpoints=http://173.230.158.103:8545"
+        volumeMounts:
+          - mountPath: "/custom_config_data"
+            name: custom-config-data-claim
         ports:
         - containerPort: 9000
           name: http
