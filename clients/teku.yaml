@@ -30,7 +30,7 @@ spec:
             fieldRef:
               fieldPath: status.podIP
         args:
-        - "--data-path=/beacondata"
+        # - "--data-path=/beacondata"
         - "--data-storage-mode=PRUNE"
         - "--p2p-enabled=true"
         - "--p2p-port=9000"

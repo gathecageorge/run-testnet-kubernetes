@@ -30,7 +30,7 @@ spec:
             fieldRef:
               fieldPath: status.podIP
         args:
-        - "--data-dir=/beacondata"
+        # - "--data-dir=/beacondata"
         - "--non-interactive"
         - "--status-bar=false"
         - "--tcp-port=9000"
